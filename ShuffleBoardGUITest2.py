@@ -3,9 +3,6 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import serial
-import paramiko
-import matplotlib.pyplot as plt
-import numpy as np
 
 LARGEFONT = ("Verdana", 35)
 
