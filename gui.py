@@ -2,14 +2,13 @@ import io
 import tkinter as tk
 from PIL import Image, ImageTk
 import serial
-import paramiko
-import matplotlib.pyplot as plt
-import numpy as np
 
 class GUI:
     def __init__(self, master):
         self.master = master
         master.title("Shuffleboard Homescreen")
+
+        self.state = 'MENU'
 
         states = ['MENU', 'AIM', 'SPIN', 'ANGLE', 'POWER']
         gallery = {s:ImageTk.PhotoImage(Image.open(s+'.jpg'))
@@ -17,22 +16,35 @@ class GUI:
         
         self.ser = serial.Serial('COM3', 9600)
 
-        self.label_username = tk.Label(master, text="Username:")
-        self.label_password = tk.Label(master, text="Password:")
 
-        self.entry_username = tk.Entry(master)
-        self.entry_password = tk.Entry(master, show="*")
+        self.canvas = tk.Canvas(self.root, width=800, height=600)
+        self.canvas.pack()
 
-        self.label_username.grid(row=0, sticky=tk.E)
-        self.label_password.grid(row=1, sticky=tk.E)
-        self.entry_username.grid(row=0, column=1)
-        self.entry_password.grid(row=1, column=1)
+        self.root.after(100, self.check_serial)
+        self.update_display()
+        
 
-        self.logbtn = tk.Button(master, text="Log In", command=self._ssh_login)
-        self.logbtn.grid(columnspan=2)
 
-        self.username = ''
-        self.password = ''
+        # self.label_username = tk.Label(master, text="Username:")
+        # self.label_password = tk.Label(master, text="Password:")
+
+        # self.entry_username = tk.Entry(master)
+        # self.entry_password = tk.Entry(master, show="*")
+
+        # self.label_username.grid(row=0, sticky=tk.E)
+        # self.label_password.grid(row=1, sticky=tk.E)
+        # self.entry_username.grid(row=0, column=1)
+        # self.entry_password.grid(row=1, column=1)
+
+        # self.logbtn = tk.Button(master, text="Log In", command=self._ssh_login)
+        # self.logbtn.grid(columnspan=2)
+
+        # self.username = ''
+        # self.password = ''
+
+    def check_serial():
+        
+
 
     def _ssh_login(self):
         # connect = False
