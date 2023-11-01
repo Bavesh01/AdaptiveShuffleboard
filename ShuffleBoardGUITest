@@ -1,0 +1,40 @@
+import io
+from tkinter import *
+from tkinter import messagebox
+from PIL import Image, ImageTk
+import serial
+import paramiko
+import matplotlib.pyplot as plt
+import numpy as np
+
+# if __name__ == "__main__":
+#     ser = serial.Serial('COM3', 9600)
+#     ser.flush()
+
+
+def toggle_fs(dummy=None):
+    state = False if root.attributes('-fullscreen') else True
+    root.attributes('-fullscreen', state)
+    if not state:
+        root.geometry('300x300+100+100')
+
+root = Tk()
+root.attributes('-fullscreen', True)
+background = Canvas(root, bg='RoyalBlue4', highlightthickness=0).pack(expand=True, fill=BOTH)
+#pucks = PhotoImage(file="PucksTest.png")
+#background.create_image(image=pucks)
+#textbox = Canvas(root, bg='black', highlightthickness=0).place(x=1000,y=60)
+#textbox.create_text(text="HOMESCREEN")
+#label = Label(root,text="HOMESCREEN").place(x=1000, y=60)
+
+root.bind('<Escape>', toggle_fs)
+# def update():
+#     if ser.in_waiting > 0:
+#         line = ser.readline().decode('utf-8').rstrip()
+#         if int(line) == 1:
+#             pass
+#         if int(line) == 2:
+#             pass
+#     root.after(10, update)
+# update()
+root.mainloop()
