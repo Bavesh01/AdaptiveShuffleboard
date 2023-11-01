@@ -21,9 +21,11 @@ def toggle_fs(dummy=None):
 root = Tk()
 root.attributes('-fullscreen', True)
 background = Canvas(root, bg='RoyalBlue4', highlightthickness=0).pack(expand=True, fill=BOTH)
-textbox = Canvas(root, bg='black', highlightthickness=0).place(x=1000,y=60)
+#pucks = PhotoImage(file="PucksTest.png")
+#background.create_image(image=pucks)
+#textbox = Canvas(root, bg='black', highlightthickness=0).place(x=1000,y=60)
 #textbox.create_text(text="HOMESCREEN")
-label = Label(root,text="HOMESCREEN").place(x=1000, y=60)
+#label = Label(root,text="HOMESCREEN").place(x=1000, y=60)
 
 root.bind('<Escape>', toggle_fs)
 # def update():
