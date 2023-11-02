@@ -40,6 +40,7 @@ void controlAim() {
     if (puff>14) { //If the user sufficiently puffs to confirm
       analogWrite(actuator_RPWM, 0);
       analogWrite(actuator_LPWM, 0);
+      // Publish exit
       break;
     }
     else if (yVal < 375) { //Joystick is tilted left
@@ -48,6 +49,7 @@ void controlAim() {
       Serial.print(" X is...");
       Serial.print(yVal);
       Serial.print("\n");
+      //Serial.print("AIM_MODE_LEFT \n")
     }
     else if (yVal > 675) { //Joystick is tilted right
       analogWrite(actuator_RPWM, 0);
@@ -55,6 +57,7 @@ void controlAim() {
       Serial.print(" X is...");
       Serial.print(yVal);
       Serial.print("\n");
+      //Serial.print("AIM_MODE_RIGHT \n")
     }
     else { //Joystick is not tilted either direction
       analogWrite(actuator_RPWM, 0);
@@ -67,14 +70,17 @@ void setSpin(int spinVal) {
   if (spinVal > 0) {
     analogWrite(spin_RPWM, spinVal);
     analogWrite(spin_LPWM, 0);
+    //Serial.print("SPIN_MODE_LEFT \n")
   }
   else if (spinVal < 0) {
     analogWrite(spin_RPWM, 0);
     analogWrite(spin_LPWM, (-1*spinVal));
+    //Serial.print("SPIN_MODE_RIGHT \n")
   }
   else {
     analogWrite(spin_RPWM, 0);
     analogWrite(spin_LPWM, 0);
+    //Serial.print("SPIN_MODE_ZERO \n")
   }
 }
 
@@ -86,6 +92,7 @@ void controlSpin() {
     int puff = readPuff();
     if (puff>14) { //If the user suffieciently puffs to confirm
       break;
+      //publish exit
     }
     else if (puff<14) { //If the user sufficiently sips to cancel out spin
       spinVal = 0;
@@ -113,6 +120,7 @@ void controlShoot() {
     if (puff<14 && powerLevel != 16) {
       powerLevel += 1;
       Serial.print("Current Power Level: ");
+      // Serial.print("POWER_MODE_RIGHT \n")
       Serial.print(powerLevel);
       Serial.print("\n");
       delay(250);
@@ -120,6 +128,7 @@ void controlShoot() {
     else if (puff<14 && powerLevel == 16) {
       powerLevel = 0;
       Serial.print("Resetting Power Level to 0");
+      //  Serial.print("POWER_MODE_ZERO \n")
       Serial.print("\n");
       delay(250);
     }
@@ -127,6 +136,7 @@ void controlShoot() {
       break;
     }
   }
+  //  Serial.print("SHOOTING \n")
   Serial.print("Shooting!!\n");
   int shotSpeed = (powerLevel *4) + 15;
   int shotTime = (5*60*100)/shotSpeed;
@@ -148,6 +158,7 @@ void controlShoot() {
 }
 
 void reHome() {
+  //  Serial.print("HOMING \n")
   Serial.print("System Rehoming\n");
   analogWrite(pinion_RPWM, 0);
   analogWrite(pinion_LPWM, 30);
@@ -164,6 +175,7 @@ void reHome() {
 }
 
 void moveMode() {
+  //  Serial.print("MOVE_MODE")
   Serial.print("System entering Move Mode\n");
   Serial.print("Puff to confirm system in place for next shot with puck reloaded\n");
   while(1) {
@@ -178,15 +190,19 @@ void moveMode() {
 void confirm(int choice) {
   if (choice == 1) {
     Serial.print("Selected Launch Angle\n");
+    //Serial.print("ANGLE_SELECT \n");
   }
   else if (choice == 2) {
     Serial.print("Selected Aim\n");
+    //Serial.print("AIMXX_SELECT \n");
   }
   else if (choice == 3) {
     Serial.print("Selected Spin\n");
+    //Serial.print("SPINX_SELECT \n");
   }
   else if (choice == 4) {
     Serial.print("Selected Power and Shoot\n");
+    //Serial.print("POWER_SELECT \n");
   }
   Serial.print("CONFIRM YOUR CHOICE?\n");
   while(1) {
@@ -209,11 +225,12 @@ void confirm(int choice) {
     else if (choice == 2) { //If the user selected AIM CONTROL
       if (puff>14) { //If the user sufficiently puffs to confirm
         delay(2000);
+        //Serial.print("AIM_MODE_ZERO \n");
         controlAim();
         break;
       }
       else if (confirmXVal > 675 || confirmXVal < 375 || confirmYVal < 375) { // If the joystick is moved RIGHT, LEFT, OR DOWN)
-        delay(2000);
+        delay(2000);        
         break;
       }
     }
@@ -221,6 +238,7 @@ void confirm(int choice) {
     else if (choice == 3) { //If the user selected SPIN CONTROL
       if (puff>14) { //If the user sufficiently puffs to 
         delay(2000);
+        //Serial.print("SPIN_MODE_ZERO \n");
         controlSpin();
         break;
       }
@@ -233,6 +251,7 @@ void confirm(int choice) {
     else if (choice == 4) { //If the user selected POWER AND SHOOT
       if (puff>14) { //If the user sufficiently puffs to confirm
         delay(2000);
+        //Serial.print("POWER_MODE_ZERO \n");
         controlShoot();
         break;
       }
@@ -271,6 +290,7 @@ void setup() {
 
 void loop() {
   Serial.print("ON HOME SCREEN \n");
+  //Serial.print("MENU \n");
   while(1) {
     int homeXVal = analogRead(A0);
     int homeYVal = analogRead(A2);

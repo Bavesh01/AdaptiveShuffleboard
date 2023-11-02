@@ -14,6 +14,7 @@ class GUI:
         self.states = ['MENU', 'AIM', 'SPIN', 'ANGLE', 'POWER']
         self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png'))
                    for s in self.states}
+
         
         self.ser = serial.Serial('COM7', 9600)
 
@@ -25,7 +26,15 @@ class GUI:
         self.update_display()
 
     def check_serial(self):
+        '''
+        Should update self.state to a corresponding image in /images
+        '''
         print("heya")
+
+        if self.ser.in_waiting > 0:
+            data = self.ser.readline().decode('utf-8').rstrip()
+            # FIND NATURE OF DATA
+            
         tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
         for c in tmp_sts.keys():
             if keyboard.is_pressed(c):
