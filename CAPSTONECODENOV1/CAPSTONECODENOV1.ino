@@ -115,15 +115,14 @@ void controlAngle() {
     if (puff>14) { //If the user sufficiently puffs to confirm
       break;
     }
-    else if (yVal < 375 && angle_deg != 60) { //Joystick is tilted left
-      angleDeg -= 3;
+    else if (yVal < 375 && angleDeg != 60) { //Joystick is tilted left
+      angleDeg -= 5;
     }
-    else if (yVal > 675 && angle_deg != 120) { //Joystick is tilted left
-      angleDeg += 3;
+    else if (yVal > 675 && angleDeg != 120) { //Joystick is tilted left
+      angleDeg += 5;
     }
     myservo.write(angleDeg);
     delay(1000);
-    }
   }
 }
 
@@ -155,7 +154,7 @@ void controlShoot() {
   }
   Serial.print("Shooting!!\n");
   int shotSpeed = (powerLevel *4) + 15;
-  int shotTime = (5*60*100)/shotSpeed;
+  int shotTime = (5*60*75)/shotSpeed;
   analogWrite(pinion_RPWM, shotSpeed); //Pinion moves rack forward
   analogWrite(pinion_LPWM, 0);
   delay(shotTime); //For a certain amount of time
@@ -293,6 +292,21 @@ void setup() {
 
   pinMode(A0, INPUT); //x-value
   pinMode(A2, INPUT); //y-value
+
+  analogWrite(actuator_RPWM, 0);
+  analogWrite(actuator_LPWM, 400);
+  delay(10000);
+  analogWrite(actuator_RPWM, 0);
+  analogWrite(actuator_LPWM, 0);
+
+  int startX = 0;
+  while (startX < 11582) {
+    analogWrite(actuator_RPWM, 400);
+    analogWrite(actuator_LPWM, 0);
+    startX += 1;
+  }
+  analogWrite(actuator_RPWM, 0);
+  analogWrite(actuator_LPWM, 0);
 }
 
 void loop() {
