@@ -1,5 +1,7 @@
 import tkinter as tk
 import keyboard
+import serial
+import time
 
 
 class TextDisplayGUI:
@@ -13,6 +15,10 @@ class TextDisplayGUI:
         # Create a canvas with a white background
         self.canvas = tk.Canvas(self.master, width=800, height=450, bg='white')
         self.canvas.pack()
+
+        self.ser = serial.Serial('/dev/ttyUSB0', 9600)
+        time.sleep(2)
+
 
         # Place text in the middle of the canvas
         self.text_id = self.canvas.create_text(400, 225, text=self.text.get(), font=('Helvetica', 20))
@@ -29,14 +35,17 @@ class TextDisplayGUI:
         # if self.ser.in_waiting > 0:
         #     data = self.ser.readline().decode('utf-8').rstrip()
             # FIND NATURE OF DATA
-            
-        tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
-        for c in tmp_sts.keys():
-            if keyboard.is_pressed(c):
-                print("can hear key")
-                self.state = tmp_sts[c]
-                self.update_display(c)
-                break
+        if self.ser.in_waiting > 0:
+          data = self.ser.readline().decode('utf-8').rstrip()
+          self.update_display(data[0])
+
+        # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
+        # for c in tmp_sts.keys():
+        #     if keyboard.is_pressed(c):
+        #         print("can hear key")
+        #         self.state = tmp_sts[c]
+        #         self.update_display(c)
+        #         break
         self.master.after(100, self.check_serial)
 
     
