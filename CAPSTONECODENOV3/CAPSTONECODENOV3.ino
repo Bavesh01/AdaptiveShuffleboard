@@ -42,6 +42,7 @@ void controlAim() {
     Serial.print("\n");
     int yVal = analogRead(A2); //sets the Y value
     int puff = readPuff();
+    Serial.println("IMAGE100");
     if (puff>14) { //If the user sufficiently puffs to confirm
       analogWrite(actuator_RPWM, 0);
       analogWrite(actuator_LPWM, 0);
@@ -54,6 +55,7 @@ void controlAim() {
       Serial.print("X position is: ");
       Serial.print(xPosition);
       Serial.print("\n");
+      Serial.println("IMAGE101");
     }
     else if (yVal > 675 && xPosition < 106) { //Joystick is tilted right
       analogWrite(actuator_RPWM, 0);
@@ -62,10 +64,12 @@ void controlAim() {
       Serial.print("X position is: ");
       Serial.print(xPosition);
       Serial.print("\n");
+      Serial.println("IMAGE102");
     }
     else { //Joystick is not tilted either direction
       analogWrite(actuator_RPWM, 0);
       analogWrite(actuator_LPWM, 0);
+      Serial.println("IMAGE100");
     }
   }
 }
@@ -103,6 +107,9 @@ void controlSpin() {
     else if (yVal > 675 && spinVal != 100) {
       spinVal += 20;
     }
+    int k = 200 + spinval/20;
+    String m = "IMAGE" + k;
+    Serial.println(m);
     setSpin(spinVal);
     delay(1500);
   }
@@ -110,6 +117,7 @@ void controlSpin() {
 
 void controlAngle() {
   int angleDeg = 90; //
+  Serial.println("IMAGE300");
   Serial.print("Controlling Launch Angle with Joystick");
   Serial.print("\n");
   while (1) {
@@ -150,17 +158,22 @@ void controlShoot() {
       Serial.print(powerLevel);
       Serial.print("\n");
       delay(250);
+      int k = 400 + powerLevel;
+      String m = "IMAGE" + k;
+      Serial.println(m);
     }
     else if (puff<14 && powerLevel == 16) {
       powerLevel = 0;
       Serial.print("Resetting Power Level to 0");
       Serial.print("\n");
+      Serial.println("IMAGE400");
       delay(250);
     }
     else if (puff>14) {
       break;
     }
   }
+  Serial.println("IMAGE999");
   Serial.print("Shooting!!\n");
   int shotSpeed = (powerLevel *4) + 15;
   int shotTime = (5*60*75)/shotSpeed;
@@ -182,6 +195,7 @@ void controlShoot() {
 }
 
 void reHome() {
+  Serial.println("IMAGE001");
   Serial.print("System Rehoming\n");
   analogWrite(pinion_RPWM, 0);
   analogWrite(pinion_LPWM, 30);
@@ -212,6 +226,7 @@ void reHome() {
 }
 
 void moveMode() {
+  Serial.println("IMAGE002");
   Serial.print("System entering Move Mode\n");
   Serial.print("Puff to confirm system in place for next shot with puck reloaded\n");
   while(1) {
@@ -226,15 +241,19 @@ void moveMode() {
 void confirm(int choice) {
   if (choice == 1) {
     Serial.print("Selected Launch Angle\n");
+    Serial.println("IMAGE030");
   }
   else if (choice == 2) {
     Serial.print("Selected Aim\n");
+    Serial.println("IMAGE010");
   }
   else if (choice == 3) {
     Serial.print("Selected Spin\n");
+    Serial.println("IMAGE020");
   }
   else if (choice == 4) {
     Serial.print("Selected Power and Shoot\n");
+    Serial.println("IMAGE040");
   }
   Serial.print("CONFIRM YOUR CHOICE?\n");
   while(1) {
@@ -333,6 +352,7 @@ void setup() {
 
 void loop() {
   Serial.print("ON HOME SCREEN \n");
+  Serial.println("IMAGE000");
   while(1) {
     int homeXVal = analogRead(A0);
     int homeYVal = analogRead(A2);

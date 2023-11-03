@@ -3,6 +3,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import serial
 import keyboard
+import time
 
 class GUI:
     def __init__(self, master):
@@ -35,10 +36,15 @@ class GUI:
         print(self.states)
 
         self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png'))
-                   for s in self.states}
+                   for s in self.states.keys()}
 
-        
-        #self.ser = serial.Serial('COM7', 9600)
+
+        try:
+            self.ser = serial.Serial('/dev/ttyACM0', 2000000)
+        except:
+            self.ser = serial.Serial('/dev/ttyACM1', 2000000)
+
+        time.sleep(2)
 
 
         self.canvas = tk.Canvas(self.master, width=800, height=450)
@@ -53,18 +59,27 @@ class GUI:
         '''
         print("heya")
 
+        # if self.ser.in_waiting > 0:
+        #     data = self.ser.readline().decode('utf-8').rstrip()
+        
         if self.ser.in_waiting > 0:
-            data = self.ser.readline().decode('utf-8').rstrip()
+          data = self.ser.read().decode('utf-8').rstrip()
+          print(data)
+          if 'IMAGE' in data:
+              state = data.split("IMAGE",1)[1][:3]
+              self.state = state
+          time.sleep(0.01)
+          self.update_display()
+
             
             
-            
-        tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
-        for c in tmp_sts.keys():
-            if keyboard.is_pressed(c):
-                print("can hear key")
-                self.state = tmp_sts[c]
-                self.update_display()
-                break
+        # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
+        # for c in tmp_sts.keys():
+        #     if keyboard.is_pressed(c):
+        #         print("can hear key")
+        #         self.state = tmp_sts[c]
+        #         self.update_display()
+        #         break
         self.master.after(100, self.check_serial)
 
     
