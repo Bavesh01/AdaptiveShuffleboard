@@ -16,7 +16,13 @@ class TextDisplayGUI:
         self.canvas = tk.Canvas(self.master, width=800, height=450, bg='white')
         self.canvas.pack()
 
-        self.ser = serial.Serial('/dev/ttyACM0', 2000000)
+        try:
+            self.ser = serial.Serial('/dev/ttyACM0', 2000000)
+        except:
+            self.ser = serial.Serial('/dev/ttyACM1', 2000000)
+
+
+        
         time.sleep(2)
 
 

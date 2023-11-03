@@ -198,7 +198,7 @@ void confirm(int choice) {
   }
   else if (choice == 3) {
     Serial.print("Selected Spin\n");
-    //Serial.print("SPINX_SELECT \n");
+    //Serial.print("SPIN_SELECT \n");
   }
   else if (choice == 4) {
     Serial.print("Selected Power and Shoot\n");

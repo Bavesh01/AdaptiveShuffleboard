@@ -11,7 +11,29 @@ class GUI:
 
         self.state = 'MENU'
 
-        self.states = ['MENU', 'AIM', 'SPIN', 'ANGLE', 'POWER']
+        self.states = {
+            '000' : 'MENU',
+            '010' : 'AIM_SELECT',
+            '020' : 'SPIN_SELCT',
+            '030' : 'ANGLE_SELECT',
+            '040' : 'POWER_SELECT',
+            '100' : 'AIM_MODE_ZER0',
+            '101' : 'AIM_MODE_RIGHT',
+            '102' : 'AIM_MODE_LEFT',
+            '200' : 'SPIN_MODE_ZER0',
+            '300' : 'ANGLE_MODE_ZERO',
+            '400' : 'POWER_MODE_ZERO',
+            '999' : 'SHOOTING',
+            '002' : 'MOVE_MODE',
+            '001' : 'HOMING',
+        }
+        for i in range(1,5):
+            self.states[str(200+i)] = 'SPIN_MODE_RIGHT' + str(i)
+            self.states[str(200-i)] = 'SPIN_MODE_LEFT' + str(i)
+        for i in range(1,17):
+            self.states[str(400+i)] = 'POWER_MODE_' + str(i)
+        print(self.states)
+
         self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png'))
                    for s in self.states}
 
@@ -19,7 +41,7 @@ class GUI:
         #self.ser = serial.Serial('COM7', 9600)
 
 
-        self.canvas = tk.Canvas(self.master, width=800, height=600)
+        self.canvas = tk.Canvas(self.master, width=800, height=450)
         self.canvas.pack()
 
         self.master.after(100, self.check_serial)
@@ -33,7 +55,8 @@ class GUI:
 
         if self.ser.in_waiting > 0:
             data = self.ser.readline().decode('utf-8').rstrip()
-            # FIND NATURE OF DATA
+            
+            
             
         tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
         for c in tmp_sts.keys():
@@ -47,7 +70,7 @@ class GUI:
     
     def update_display(self):
         self.canvas.delete("all")
-        self.canvas.create_image(400, 300, image=self.gallery[self.state])
+        self.canvas.create_image(400, 225, image=self.gallery[self.state])
 
         
 root = tk.Tk()
