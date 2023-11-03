@@ -16,7 +16,7 @@ class TextDisplayGUI:
         self.canvas = tk.Canvas(self.master, width=800, height=450, bg='white')
         self.canvas.pack()
 
-        self.ser = serial.Serial('/dev/ttyUSB0', 9600)
+        self.ser = serial.Serial('/dev/ttyACM0', 2000000)
         time.sleep(2)
 
 
@@ -35,9 +35,12 @@ class TextDisplayGUI:
         # if self.ser.in_waiting > 0:
         #     data = self.ser.readline().decode('utf-8').rstrip()
             # FIND NATURE OF DATA
+        
         if self.ser.in_waiting > 0:
-          data = self.ser.readline().decode('utf-8').rstrip()
-          self.update_display(data[0])
+          data = self.ser.read().decode('utf-8').rstrip()
+          print(data)
+          time.sleep(0.1)
+          self.update_display(data)
 
         # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
         # for c in tmp_sts.keys():
@@ -48,12 +51,11 @@ class TextDisplayGUI:
         #         break
         self.master.after(100, self.check_serial)
 
-    
     def update_display(self, current_text):
         self.text.set(current_text)  # Update the text variable
         self.canvas.itemconfigure(self.text_id, text=self.text.get())  # Update the canvas text
 
-        pass
+        
         # self.canvas.delete("all")
         # self.canvas.create_image(400, 300, image=self.gallery[self.state])
 
