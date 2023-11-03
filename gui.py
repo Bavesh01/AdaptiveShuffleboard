@@ -16,7 +16,7 @@ class GUI:
                    for s in self.states}
 
         
-        self.ser = serial.Serial('COM7', 9600)
+        #self.ser = serial.Serial('COM7', 9600)
 
 
         self.canvas = tk.Canvas(self.master, width=800, height=600)
