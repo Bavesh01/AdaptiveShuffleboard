@@ -44,9 +44,7 @@ class GUI:
         except:
             self.ser = serial.Serial('/dev/ttyACM1', 2000000)
 
-        time.sleep(2)
-
-
+        time.sleep(0.5)
         self.canvas = tk.Canvas(self.master, width=800, height=450)
         self.canvas.pack()
 
@@ -71,15 +69,7 @@ class GUI:
           time.sleep(0.01)
           self.update_display()
 
-            
-            
-        # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
-        # for c in tmp_sts.keys():
-        #     if keyboard.is_pressed(c):
-        #         print("can hear key")
-        #         self.state = tmp_sts[c]
-        #         self.update_display()
-        #         break
+
         self.master.after(100, self.check_serial)
 
     
@@ -91,3 +81,14 @@ class GUI:
 root = tk.Tk()
 my_gui = GUI(root)
 root.mainloop()
+
+
+            
+            
+        # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
+        # for c in tmp_sts.keys():
+        #     if keyboard.is_pressed(c):
+        #         print("can hear key")
+        #         self.state = tmp_sts[c]
+        #         self.update_display()
+        #         break
