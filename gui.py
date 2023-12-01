@@ -10,7 +10,7 @@ class GUI:
         self.master = master
         master.title("Shuffleboard Homescreen")
 
-        self.state = 'MENU'
+        self.state = '000'
 
         self.states = {
             '000' : 'MENU',
@@ -35,20 +35,21 @@ class GUI:
             self.states[str(400+i)] = 'POWER_MODE_' + str(i)
         print(self.states)
 
-        self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png'))
+        self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png').resize((800,450)))
                    for s in self.states.keys()}
+        
+        
 
-
-        try:
-            self.ser = serial.Serial('/dev/ttyACM0', 2000000)
-        except:
-            self.ser = serial.Serial('/dev/ttyACM1', 2000000)
+        # try:
+        #     self.ser = serial.Serial('/dev/ttyACM0', 2000000)
+        # except:
+        #     self.ser = serial.Serial('/dev/ttyACM1', 2000000)
 
         time.sleep(0.5)
         self.canvas = tk.Canvas(self.master, width=800, height=450)
         self.canvas.pack()
 
-        self.master.after(100, self.check_serial)
+        self.master.after(1, self.check_serial)
         self.update_display()
 
     def check_serial(self):
@@ -60,17 +61,18 @@ class GUI:
         # if self.ser.in_waiting > 0:
         #     data = self.ser.readline().decode('utf-8').rstrip()
         
-        if self.ser.in_waiting > 0:
-          data = self.ser.read().decode('utf-8').rstrip()
-          print(data)
-          if 'IMAGE' in data:
-              state = data.split("IMAGE",1)[1][:3]
-              self.state = state
-          time.sleep(0.01)
-          self.update_display()
+
+        # if self.ser.in_waiting > 0:
+        #   data = self.ser.read().decode('utf-8').rstrip()
+        #   print(data)
+        #   if 'IMAGE' in data:
+        #       state = data.split("IMAGE",1)[1][:3]
+        #       self.state = state
+        #   time.sleep(0.01)
+        #   self.update_display()
 
 
-        self.master.after(100, self.check_serial)
+        self.master.after(1, self.check_serial)
 
     
     def update_display(self):
