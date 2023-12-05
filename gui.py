@@ -9,7 +9,7 @@ class GUI:
     def __init__(self, master):
         self.master = master
         master.title("Shuffleboard Homescreen")
-
+        master.attributes('-fullscreen', True)
         self.state = '000'
 
         self.states = {
@@ -27,12 +27,17 @@ class GUI:
             '999' : 'SHOOTING',
             '002' : 'MOVE_MODE',
             '001' : 'HOMING',
-        }
+            '777' : 'PRECISION_PRECISION',
+            '778' : 'PRECISION_ARCADE',
+            '666' : 'ARCADE_PRECISION',
+            '667' : 'ARCADE_ARCADE'
+         }
         for i in range(1,5):
             self.states[str(200+i)] = 'SPIN_MODE_RIGHT' + str(i)
             self.states[str(200-i)] = 'SPIN_MODE_LEFT' + str(i)
         for i in range(1,17):
             self.states[str(400+i)] = 'POWER_MODE_' + str(i)
+        for i in range(1)
         print(self.states)
 
         self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png').resize((800,450)))
@@ -58,18 +63,15 @@ class GUI:
         '''
         print("heya")
 
-        # if self.ser.in_waiting > 0:
-        #     data = self.ser.readline().decode('utf-8').rstrip()
-        
 
-        # if self.ser.in_waiting > 0:
-        #   data = self.ser.read().decode('utf-8').rstrip()
-        #   print(data)
-        #   if 'IMAGE' in data:
-        #       state = data.split("IMAGE",1)[1][:3]
-        #       self.state = state
-        #   time.sleep(0.01)
-        #   self.update_display()
+        if self.ser.in_waiting > 0:
+          data = self.ser.read().decode('utf-8').rstrip()
+          print(data)
+          if 'IMAGE' in data:
+              state = data.split("IMAGE",1)[1][:3]
+              self.state = state
+          time.sleep(0.01)
+          self.update_display()
 
 
         self.master.after(1, self.check_serial)
