@@ -53,7 +53,7 @@ class GUI:
         
         
         time.sleep(0.5)
-        self.canvas = tk.Canvas(self.master, width=810, height=490)
+        self.canvas = tk.Canvas(self.master, width=800, height=490)
         self.canvas.pack(expand=True, fill=tk.BOTH)
 
         try:
@@ -84,7 +84,7 @@ class GUI:
     
     def update_display(self):
         self.canvas.delete("all")
-        self.canvas.create_image(810/2, 490/2, image=self.gallery[self.state])
+        self.canvas.create_image(800/2, 490/2, image=self.gallery[self.state])
 
         
 root = tk.Tk()
