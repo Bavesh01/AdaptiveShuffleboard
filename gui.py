@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import io
 import tkinter as tk
 from PIL import Image, ImageTk
@@ -30,25 +31,32 @@ class GUI:
             '777' : 'PRECISION_PRECISION',
             '778' : 'PRECISION_ARCADE',
             '666' : 'ARCADE_PRECISION',
-            '667' : 'ARCADE_ARCADE'
+            '667' : 'ARCADE_ARCADE',
+            '720' : 'ARCADE_SPIN',
+            '721' : 'ARCADE_SPIN_R',
+            '719' : 'ARCADE_SPIN_L',
+            '730' : 'ARCADE_LAUNCH',
+            '888' : 'ARCADE_LAUNCH',
          }
-        for i in range(1,5):
+        for i in range(1,6):
             self.states[str(200+i)] = 'SPIN_MODE_RIGHT' + str(i)
             self.states[str(200-i)] = 'SPIN_MODE_LEFT' + str(i)
+            self.states[str(720+i)] = 'SPIN_MODE_RIGHT' + str(i)
+            self.states[str(720-i)] = 'SPIN_MODE_LEFT' + str(i)
         for i in range(1,17):
             self.states[str(400+i)] = 'POWER_MODE_' + str(i)
-        for i in range(1)
-        print(self.states)
+        #print(self.states)
+        
 
         self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png').resize((800,450)))
                    for s in self.states.keys()}
         
         
 
-        # try:
-        #     self.ser = serial.Serial('/dev/ttyACM0', 2000000)
-        # except:
-        #     self.ser = serial.Serial('/dev/ttyACM1', 2000000)
+        try:
+            self.ser = serial.Serial('/dev/ttyACM0', 2000000)
+        except:
+            self.ser = serial.Serial('/dev/ttyACM1', 2000000)
 
         time.sleep(0.5)
         self.canvas = tk.Canvas(self.master, width=800, height=450)
@@ -62,7 +70,7 @@ class GUI:
         Should update self.state to a corresponding image in /images
         '''
         if self.ser.in_waiting > 0:
-          data = self.ser.read().decode('utf-8').rstrip()
+          data = self.ser.readline().decode('utf-8').rstrip()
           print(data)
           if 'IMAGE' in data:
               state = data.split("IMAGE",1)[1][:3]
@@ -86,10 +94,10 @@ root.mainloop()
 
             
             
-        # tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
-        # for c in tmp_sts.keys():
-        #     if keyboard.is_pressed(c):
-        #         print("can hear key")
-        #         self.state = tmp_sts[c]
-        #         self.update_display()
-        #         break
+# tmp_sts = {'w':'AIM', 'a':'ANGLE', 's': 'POWER', 'd': 'SPIN', 'enter': 'MENU'}
+# for c in tmp_sts.keys():
+#     if keyboard.is_pressed(c):
+#         print("can hear key")
+#         self.state = tmp_sts[c]
+#         self.update_display()
+#         break
