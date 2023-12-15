@@ -11,7 +11,7 @@ class GUI:
         self.master = master
         master.title("Shuffleboard Homescreen")
         master.attributes('-fullscreen', True)
-        self.state = '000'
+        self.state = '001'
 
         self.states = {
             '000' : 'MENU',
@@ -24,6 +24,9 @@ class GUI:
             '102' : 'AIM_MODE_LEFT',
             '200' : 'SPIN_MODE_ZER0',
             '300' : 'ANGLE_MODE_ZERO',
+            '300' : 'ANGLE_MODE_ZERO',
+            '301' : 'ANGLE_MODE_ZERO',
+            '302' : 'ANGLE_MODE_ZERO',
             '400' : 'POWER_MODE_ZERO',
             '999' : 'SHOOTING',
             '002' : 'MOVE_MODE',
