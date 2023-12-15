@@ -41,26 +41,26 @@ class GUI:
         for i in range(1,6):
             self.states[str(200+i)] = 'SPIN_MODE_RIGHT' + str(i)
             self.states[str(200-i)] = 'SPIN_MODE_LEFT' + str(i)
-            self.states[str(720+i)] = 'SPIN_MODE_RIGHT' + str(i)
-            self.states[str(720-i)] = 'SPIN_MODE_LEFT' + str(i)
+            self.states[str(730+i)] = 'SPIN_MODE_RIGHT' + str(i)
+            self.states[str(730-i)] = 'SPIN_MODE_LEFT' + str(i)
         for i in range(1,17):
             self.states[str(400+i)] = 'POWER_MODE_' + str(i)
         #print(self.states)
         
 
-        self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.png').resize((800,450)))
+        self.gallery = {s:ImageTk.PhotoImage(Image.open(f'images/{s}.PNG').resize((800,450)))
                    for s in self.states.keys()}
         
         
+        time.sleep(0.5)
+        self.canvas = tk.Canvas(self.master, width=810, height=490)
+        self.canvas.pack(expand=True, fill=tk.BOTH)
 
         try:
             self.ser = serial.Serial('/dev/ttyACM0', 2000000)
         except:
             self.ser = serial.Serial('/dev/ttyACM1', 2000000)
 
-        time.sleep(0.5)
-        self.canvas = tk.Canvas(self.master, width=800, height=450)
-        self.canvas.pack()
 
         self.master.after(1, self.check_serial)
         self.update_display()
@@ -71,11 +71,11 @@ class GUI:
         '''
         if self.ser.in_waiting > 0:
           data = self.ser.readline().decode('utf-8').rstrip()
-          print(data)
+          #print(data)
           if 'IMAGE' in data:
               state = data.split("IMAGE",1)[1][:3]
               self.state = state
-          time.sleep(0.01)
+          #time.sleep(0.01)
           self.update_display()
 
 
@@ -84,7 +84,7 @@ class GUI:
     
     def update_display(self):
         self.canvas.delete("all")
-        self.canvas.create_image(400, 225, image=self.gallery[self.state])
+        self.canvas.create_image(810/2, 490/2, image=self.gallery[self.state])
 
         
 root = tk.Tk()
