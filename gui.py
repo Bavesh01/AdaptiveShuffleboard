@@ -61,9 +61,6 @@ class GUI:
         '''
         Should update self.state to a corresponding image in /images
         '''
-        print("heya")
-
-
         if self.ser.in_waiting > 0:
           data = self.ser.read().decode('utf-8').rstrip()
           print(data)
