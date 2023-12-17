@@ -6,6 +6,7 @@ import serial
 import keyboard
 import time
 
+
 class GUI:
     def __init__(self, master):
         self.master = master

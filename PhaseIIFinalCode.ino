@@ -110,7 +110,7 @@ void controlSpin() {
 }
 
 void controlAngle() {
-  int angleDeg = 90; //set the launch angle to 90 degrees
+  int angleDeg = 87; //set the launch angle to 90 degrees
   Serial.println("IMAGE300");
   Serial.print("Controlling Launch Angle with Joystick");
   Serial.print("\n");
@@ -120,7 +120,7 @@ void controlAngle() {
     if (puff>14) { //If the user sufficiently puffs to confirm
       break;
     }
-    else if (yVal < 425 && angleDeg != 60) { //Joystick is tilted left
+    else if (yVal < 425 && angleDeg != 57) { //Joystick is tilted left
       angleDeg -= 3;
       Serial.print("Current Angle: ");
       Serial.print(angleDeg);
@@ -129,7 +129,7 @@ void controlAngle() {
       Serial.println("IMAGE302");
       delay(1000);
     }
-    else if (yVal > 625 && angleDeg != 120) { //Joystick is tilted left
+    else if (yVal > 625 && angleDeg != 117) { //Joystick is tilted left
       angleDeg += 3;
       Serial.print("Current Angle: ");
       Serial.print(angleDeg);
@@ -201,7 +201,7 @@ void takeShot(int powerLevel) {
   int shotSpeed = calcSpeed(powerLevel); //SPEED EQUATION
   analogWrite(pinion_RPWM, shotSpeed); //Pinion moves rack forward
   analogWrite(pinion_LPWM, 0);
-  delay(14000/shotSpeed); //For a certain amount of time depending on the shot speed
+  delay(18000/shotSpeed); //For a certain amount of time depending on the shot speed
   analogWrite(solenoid_RPWM, 255); //Solenoid opens, launching puck
   analogWrite(solenoid_LPWM, 0);
   delay(12000/shotSpeed);
@@ -218,11 +218,11 @@ void takeShot(int powerLevel) {
 
 int calcSpeed(int powerLevel) {
   if (powerLevel < 14) {
-    int shotSpeed = (powerLevel * 3) + 40;
+    int shotSpeed = (powerLevel * 3) + 60;
     return shotSpeed;
   }
   else if (powerLevel >= 14) {
-    int shotSpeed = 110 + 10*(powerLevel - 14);
+    int shotSpeed = 155 + 50*(powerLevel - 14);
     return shotSpeed;
   }
 }
@@ -233,12 +233,12 @@ void reHome(int shotSpeed) {
   p_xPosition = &xPosition;
   Serial.print("System Rehoming\n");
   analogWrite(pinion_RPWM, 0);
-  analogWrite(pinion_LPWM, .75*shotSpeed); 
+  analogWrite(pinion_LPWM, .5*shotSpeed); 
   delay(26000/shotSpeed);
   analogWrite(pinion_RPWM, 0);
   analogWrite(pinion_LPWM, 0); //retract the claw using the pinion in reverse
   delay(1000);
-  myservo.write(90); //set the launch angle back to 90 degrees
+  myservo.write(87); //set the launch angle back to 90 degrees
   int homingDirection = 0;
   while(1){ //if the system is not at x=0 (home) return to x=0
     delay(100);
@@ -404,7 +404,7 @@ void pickArcadeSpin() {
     int puff = readPuff();
     //display the correct image function (takes in choice)
     if (puff>14) {
-      delay(1000);
+      delay(1500);
       setArcadeSpin(*p_spinChoice);
       break;
     }
@@ -447,14 +447,14 @@ void controlArcadeAngle() {
   while(1) {
     int puff = readPuff(); //update the pressure sensor value
     if (puff>14) {
-      delay(500);
+      delay(1500);
       break; //if user puffs, break from the angle control loop
     }
     else if (direction == 1) { //if direction is CW, increase angle by 1 every 15ms until 110 deg, then switch direction
       if (angleDeg < 110) {
         angleDeg += 4;
         myservo.write(angleDeg);
-        delay(15);
+        delay(100);
       }
       else if (angleDeg == 110) {
         direction = 0;
@@ -464,7 +464,7 @@ void controlArcadeAngle() {
       if (angleDeg > 70) {
         angleDeg -= 4;
         myservo.write(angleDeg);
-        delay(15);
+        delay(100);
       }
       else if (angleDeg == 70) {
         direction = 1;
@@ -548,7 +548,7 @@ void setup() {
   pinMode(A0, INPUT); //x-value input
   pinMode(A2, INPUT); //y-value input
 
-  myservo.write(90); //set launch angle to 90 degrees
+  myservo.write(87); //set launch angle to 90 degrees
   delay(100);
 
   Serial.print("Doing initial Homing\n");
@@ -574,11 +574,11 @@ void loop() {
     int YVal = analogRead(A2);
     int puff = readPuff();
     if (puff > 14 && *p_selected == 0) {
-      delay(1000);
+      delay(2000);
       precisionHomescreen();
     }
     else if (puff > 14 && *p_selected == 1) {
-      delay(1000);
+      delay(2000);
       runArcade();
     }
     else if (YVal < 375 && *p_selected != 0) {
